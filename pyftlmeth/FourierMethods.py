@@ -276,7 +276,7 @@ class InverseFourierTransform(FourierMethodBase):
 #==============================================================================
 class Convolution():
 	#--------------------------------------------------------------------------
-	def __init__(self, signalSize=128, responseSize=64, dtype='real64'):
+	def __init__(self, signalSize=128, responseSize=64, dtype='float64'):
 		
 		self.resultSize = signalSize + responseSize - 1
 
@@ -288,6 +288,8 @@ class Convolution():
 		self.IFFT = InverseFourierTransform(size=self.FFT.outputArraySize,
 			                                dtype=self.FFT.outputDataType)
 
+		self.fftResponse = Spectrum(np.zeros(self.resultSize, dtype=self.FFT.outputDataType))
+		
 	#--------------------------------------------------------------------------
 	def __del__(self):
 		del self.FFT
@@ -312,13 +314,10 @@ class Convolution():
 		"""
 		
 		# add zero padding to signal
-		paddedSignal = TimeSeries(np.concatenate(((signal.data,
-												   np.zeros(self.resultSize - self.signalSize,
-														    dtype = signal.data.dtype)))),
+		paddedSignal = TimeSeries(np.concatenate((signal.data,
+												  np.zeros(self.resultSize - self.signalSize,
+												  dtype = signal.data.dtype))),
 								  fs = signal.samplFreq)
-		
-		if not hasattr(self, "fftResponse"):
-			raise ValueError('Response function not set.')
 		
 		fftSignal = self.FFT(paddedSignal)
 		fftResult = fftSignal * self.fftResponse
@@ -331,20 +330,12 @@ class Convolution():
 		return "Convolution"
 	
 	#--------------------------------------------------------------------------
-	@property
-	def responseFunction(self):
-		#TODO: return as TimeSeries or as Spectrum object...I'm not sure which one is better
-		pass
-	
-	@responseFunction.setter
-	def responseFunction(self, response):
+	def setResponseFunction(self, response):
 		#TODO: edit doc string.
 		"""Since the response function is assumed to be the same for many
 		   signals to be convolved with, it must be initialized first to
 		   be reused with every signal to be convolved.
 		"""
-		
-		# add zero padding to responseFunction
 		paddedResponse = TimeSeries(np.concatenate((response.data,
 												    np.zeros(self.resultSize - self.responseSize,
 												             dtype = response.data.dtype))),
