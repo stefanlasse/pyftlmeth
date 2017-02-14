@@ -22,7 +22,7 @@ from Spectrum import Spectrum
 class FourierMethodBase(object):
 	#--------------------------------------------------------------------------
 	def __init__(self):
-		pass
+		self.pyftlmeth_homedir = ".pyftlmeth"
 
 	#--------------------------------------------------------------------------
 	def __del__(self):
@@ -61,9 +61,9 @@ class FourierMethodBase(object):
 		# check if pyfftw-directory is present in user's home directory
 		home = expanduser("~")
 		if 'win' in sys.platform:
-			pyfftwDir = "\\.pyfftw\\"
+			pyfftwDir = "\\" + self.pyftlmeth_homedir + "\\"
 		else:
-			pyfftwDir = "/.pyfftw/"
+			pyfftwDir = "/" + self.pyftlmeth_homedir + "/"
 		
 		directory = home + pyfftwDir
 
@@ -86,9 +86,9 @@ class FourierMethodBase(object):
 		"""Loads a former saved FFTW scheme plan from a pickle file."""
 		home = expanduser("~")
 		if 'win' in sys.platform:
-			pyfftwDir = "\\.pyfftw\\"
+			pyfftwDir = "\\" + self.pyftlmeth_homedir + "\\"
 		else:
-			pyfftwDir = "/.pyfftw/"		
+			pyfftwDir = "/" + self.pyftlmeth_homedir + "/"
 
 		wisdomFile = home + pyfftwDir + "pyfftw_wisdom.pys"
 		try:
@@ -109,7 +109,7 @@ class FourierTransform(FourierMethodBase):
 
 		size:  specify the array sizes for the input array to
 		       be fourier transformed.
-		dtype: specify input data type. Default is float64.
+		dtype: specify numpy input data type. Default is float64.
 		"""
 
 		if size < 1:
@@ -134,9 +134,6 @@ class FourierTransform(FourierMethodBase):
 		elif self.inputDataType == 'float64':
 			self.outputDataType = 'complex128'
 			self.outputArraySize = self.inputArraySize//2 + 1
-		#elif self.inputDataType == 'longdouble':
-		#	self.outputDataType = 'clongdouble'
-		#	self.outputArraySize = self.inputArraySize//2 + 1
 		else:
 			raise ValueError("Invalid input data type: %s"%(self.inputDataType))
 
@@ -194,9 +191,9 @@ class InverseFourierTransform(FourierMethodBase):
 
 		size:    specify the array sizes for the two input arrays to
 		         be cross correlated.
-		dtype:   specify input data type. Default float64.
-		realOut: specify whether the output of cross correlation is
-		         real or complex valued. Default is true.
+		dtype:   specify numpy input data type. Default complex128.
+		realOut: specify whether the output of IFFT is
+		         real or complex valued. Default is true = real output.
 		"""
 		if size < 1:
 			raise ValueError("Array size must be >= 1.")
@@ -221,9 +218,6 @@ class InverseFourierTransform(FourierMethodBase):
 		elif self.inputDataType == 'complex128' and self.realOut == False:
 			self.outputDataType = 'complex128'
 			self.outputArraySize = self.inputArraySize
-		#elif self.inputDataType == 'clongdouble' and self.realOut == False:
-		#	self.outputDataType = 'clongdouble'
-		#	self.outputArraySize = self.inputArraySize
 		else:
 			raise ValueError("Invalid input data type or invalid combination.")
 
@@ -331,10 +325,10 @@ class Convolution():
 	
 	#--------------------------------------------------------------------------
 	def setResponseFunction(self, response):
-		#TODO: edit doc string.
 		"""Since the response function is assumed to be the same for many
 		   signals to be convolved with, it must be initialized first to
-		   be reused with every signal to be convolved.
+		   be reused with every signal to be convolved. This saves lots
+		   of FFT computation time.
 		"""
 		paddedResponse = TimeSeries(np.concatenate((response.data,
 												    np.zeros(self.resultSize - self.responseSize,
@@ -447,6 +441,7 @@ class CrossCorrelation():
 		self.IFFT = InverseFourierTransform(size=self.FFT.outputArraySize,
 			                                dtype=self.FFT.outputDataType,
 			                                realOut=realOut)
+		self.outputArraySize = self.IFFT.outputArraySize
 
 	#--------------------------------------------------------------------------
 	def __del__(self):
@@ -495,4 +490,55 @@ class CrossCorrelation():
 									                       self.FFT.inputDataType,   \
 														   self.IFFT.outputArraySize,\
 														   self.IFFT.outputDataType)
+
+#==============================================================================
+class PowerSpectralDensity():
+	#--------------------------------------------------------------------------
+	def __init__(self, size=128, dtype='float64'):
+		"""
+		Returns a callable Power Spectral Density object.
+
+		size: 	specifies the array sizes for the input array for which
+				PSD shall be calculated.
+		dtype:	specifies input data type. Default float64.
+		"""
+		self.inputArraySize = size
+		self.dataType = dtype
+		self.AutoCorr = AutoCorrelation(size=self.inputArraySize, dtype=self.dataType)
+		self.FFT = FourierTransform(self.correlation.outputArraySize, self.dataType)
+		self.outputArraySize = self.FFT.outputArraySize
+
+	#--------------------------------------------------------------------------
+	def __del__(self):
+		del self.FFT
+		del self.AutoCorr
+	
+	#--------------------------------------------------------------------------
+	def __call__(self, inputTS):
+		if inputTS.data.size != self.arraySize:
+			raise ValueError("Time series must be of length %s"%(self.arraySize))
+		
+		ac = self.AutoCorr(inputTS)
+		psd = self.FFT(ac)
+		
+		return psd
+	
+	#--------------------------------------------------------------------------
+	def __str__(self):
+		pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
