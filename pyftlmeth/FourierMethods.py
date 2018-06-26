@@ -12,6 +12,7 @@ import numpy as np
 import pyfftw
 import pickle
 import sys
+
 from os.path import expanduser, isdir
 from os import mkdir, access, W_OK
 
@@ -88,7 +89,7 @@ class FourierMethodBase(object):
 		if 'win' in sys.platform:
 			pyfftwDir = "\\" + self.pyftlmeth_homedir + "\\"
 		else:
-			pyfftwDir = "/" + self.pyftlmeth_homedir + "/"
+			pyfftwDir = "~/" + self.pyftlmeth_homedir + "/"
 
 		wisdomFile = home + pyfftwDir + "pyfftw_wisdom.pys"
 		try:
@@ -111,6 +112,7 @@ class FourierTransform(FourierMethodBase):
 		       be fourier transformed.
 		dtype: specify numpy input data type. Default is float64.
 		"""
+		super().__init__()
 
 		if size < 1:
 			raise ValueError("Array size must be >= 1.")
@@ -195,6 +197,8 @@ class InverseFourierTransform(FourierMethodBase):
 		realOut: specify whether the output of IFFT is
 		         real or complex valued. Default is true = real output.
 		"""
+		super().__init__()
+
 		if size < 1:
 			raise ValueError("Array size must be >= 1.")
 
@@ -526,19 +530,4 @@ class PowerSpectralDensity():
 	#--------------------------------------------------------------------------
 	def __str__(self):
 		pass
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
