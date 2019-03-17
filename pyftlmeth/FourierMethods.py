@@ -483,18 +483,13 @@ class PowerSpectralDensity():
         self.inputArraySize = size
         self.dataType = dtype
         self.AutoCorr = AutoCorrelation(size=self.inputArraySize, dtype=self.dataType)
-        self.FFT = FourierTransform(self.correlation.outputArraySize, self.dataType)
+        self.FFT = FourierTransform(self.AutoCorr.correlation.outputArraySize , self.dataType)
         self.outputArraySize = self.FFT.outputArraySize
 
     ## --------------------------------------------------------------------------
-    # def __del__(self):
-        # del self.FFT
-        # del self.AutoCorr
-
-    ## --------------------------------------------------------------------------
     def __call__(self, inputTS):
-        if inputTS.data.size != self.arraySize:
-            raise ValueError("Time series must be of length %s"%(self.arraySize))
+        if inputTS.data.size != self.inputArraySize:
+            raise ValueError(f"Time series must be of length {self.inputArraySize}")
 
         ac = self.AutoCorr(inputTS)
         psd = self.FFT(ac)
