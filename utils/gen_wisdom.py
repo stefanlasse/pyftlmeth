@@ -9,7 +9,7 @@ minArraySize: minimum number of elements in array
 minArraySize: maximum number of elements in array
 linearStep:   step size for last generation step.
 
-CAUTION! Depending on how big maxArraySize is 
+CAUTION! Depending on how big maxArraySize is
          and how dense the linear spaced array sizes
          are this program can run up to several days.
 """

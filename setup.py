@@ -8,7 +8,7 @@ setup(
   author_email = 'lasse.stefan@gmx.de',
   url = 'https://github.com/stefanlasse/pyftlmeth', # use the URL to the github repo
   download_url = 'https://github.com/stefanlasse/pyftlmeth',
-  keywords = ['fourier', 'transform', 'correlation', 'cross correlation', 'auto correlation', 
+  keywords = ['fourier', 'transform', 'correlation', 'cross correlation', 'auto correlation',
 'convolution', 'deconvolution'], # arbitrary keywords
   classifiers = [],
 )

@@ -61,13 +61,13 @@ def createTimeSeriesPlot(ts, spec):
 
 
 #==============================================================================
-timeDuration = 1.0 # in seconds
+timeDuration = 5.0 # in seconds
 timeAxis = np.linspace(0.0, timeDuration, 1000)
 timeData = 1.1*np.sin(2.0*np.pi * 22.0*timeAxis)  + 2.4*np.cos(2.0*np.pi * 200*timeAxis)
 
 
 # create a time series object
-ts = fm.TimeSeries(timeData, timeDuration)
+ts = fm.TimeSeries(timeData, fs=1/timeDuration)
 
 # now create a callable FFT object for a time series with a specific length
 # and a specific input array data type.
@@ -102,5 +102,5 @@ createTimeSeriesPlot(tsReverse, spec)
 # Deleting the created FFT/IFFT objects saves the internal plans to the
 # wisdom file for faster plan creation when creating new FFT objects
 # with same size and data type.
-del fft
-del ifft
+# del fft
+# del ifft
