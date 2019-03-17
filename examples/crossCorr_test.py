@@ -1,5 +1,4 @@
-
-import FourierMethods as c
+from  pyftlmeth import FourierMethods as c
 import numpy as np
 import matplotlib.pyplot as plt
 from time import time
@@ -18,8 +17,8 @@ dataA[start:stop] = np.ones(stop-start, dtype=dataType)
 dataB[start:stop] = np.linspace(1.0, 0.0, stop-start, dtype=dataType)
 
 
-dataA = c.TimeSeries(dataA, td=1.0)
-dataB = c.TimeSeries(np.roll(dataB, np.random.randint(0, dataB.size)), td=1.0)
+dataA = c.TimeSeries(dataA, fs=1.0)
+dataB = c.TimeSeries(np.roll(dataB, np.random.randint(0, dataB.size)), fs=1.0)
 
 
 # test cross correlation
@@ -33,4 +32,4 @@ plt.plot(dataB.time, dataB.data)
 plt.plot(result.time, result.data)
 plt.plot(result.time, npResult)
 plt.title("cross")
-plt.show() 
+plt.show()

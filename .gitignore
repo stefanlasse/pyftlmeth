@@ -1,2 +1,4 @@
 *.pyc
 test*
+build/
+.ropeproject

@@ -1,5 +1,4 @@
-
-import FourierMethods as fm
+import pyftlmeth.FourierMethods as fm
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
@@ -7,57 +6,57 @@ import matplotlib.gridspec as gridspec
 
 #------------------------------------------------------------------------------
 def createSpectrumPlot(ts, spec):
-	gs = gridspec.GridSpec(3, 4)
-	axTime = plt.subplot(gs[0,:])
-	axMagn = plt.subplot(gs[1,:2])
-	axPhas = plt.subplot(gs[-1,:2])
-	axReal = plt.subplot(gs[1,2:])
-	axImag = plt.subplot(gs[-1:,2:])
+    gs = gridspec.GridSpec(3, 4)
+    axTime = plt.subplot(gs[0,:])
+    axMagn = plt.subplot(gs[1,:2])
+    axPhas = plt.subplot(gs[-1,:2])
+    axReal = plt.subplot(gs[1,2:])
+    axImag = plt.subplot(gs[-1:,2:])
 
-	axTime.plot(ts.time, ts.real)
-	axTime.set_ylabel("Amplitude")
-	axTime.set_xlabel("Time [sec]")
-	axMagn.plot(spec.freq, spec.magnitude)
-	axMagn.set_ylabel("Magnitude")
-	axMagn.set_xlabel("Frequency [Hz]")
-	axPhas.plot(spec.freq, spec.phase)
-	axPhas.set_ylabel("Phase")
-	axPhas.set_xlabel("Frequency [Hz]")
-	axReal.plot(spec.freq, spec.real)
-	axReal.set_ylabel("Real")
-	axReal.set_xlabel("Frequency [Hz]")
-	axImag.plot(spec.freq, spec.imag)
-	axImag.set_ylabel("Imaginary")
-	axImag.set_xlabel("Frequency [Hz]")
-	plt.tight_layout()
-	plt.show()
+    axTime.plot(ts.time, ts.real)
+    axTime.set_ylabel("Amplitude")
+    axTime.set_xlabel("Time [sec]")
+    axMagn.plot(spec.freq, spec.magnitude)
+    axMagn.set_ylabel("Magnitude")
+    axMagn.set_xlabel("Frequency [Hz]")
+    axPhas.plot(spec.freq, spec.phase)
+    axPhas.set_ylabel("Phase")
+    axPhas.set_xlabel("Frequency [Hz]")
+    axReal.plot(spec.freq, spec.real)
+    axReal.set_ylabel("Real")
+    axReal.set_xlabel("Frequency [Hz]")
+    axImag.plot(spec.freq, spec.imag)
+    axImag.set_ylabel("Imaginary")
+    axImag.set_xlabel("Frequency [Hz]")
+    plt.tight_layout()
+    plt.show()
 
 #------------------------------------------------------------------------------
 def createTimeSeriesPlot(ts, spec):
-	gs = gridspec.GridSpec(3, 4)
-	axTime = plt.subplot(gs[0,:])
-	axMagn = plt.subplot(gs[1,:2])
-	axPhas = plt.subplot(gs[-1,:2])
-	axReal = plt.subplot(gs[1,2:])
-	axImag = plt.subplot(gs[-1:,2:])
+    gs = gridspec.GridSpec(3, 4)
+    axTime = plt.subplot(gs[0,:])
+    axMagn = plt.subplot(gs[1,:2])
+    axPhas = plt.subplot(gs[-1,:2])
+    axReal = plt.subplot(gs[1,2:])
+    axImag = plt.subplot(gs[-1:,2:])
 
-	axTime.plot(spec.freq, spec.magnitude)
-	axTime.set_ylabel("Magnitude")
-	axTime.set_xlabel("Frequency [Hz]")
-	axMagn.plot(ts.time, ts.magnitude)
-	axMagn.set_ylabel("Magnitude")
-	axMagn.set_xlabel("Time [sec]")
-	axPhas.plot(ts.time, ts.phase)
-	axPhas.set_ylabel("Phase")
-	axPhas.set_xlabel("Time [sec]")
-	axReal.plot(ts.time, ts.real)
-	axReal.set_ylabel("Real")
-	axReal.set_xlabel("Time [sec]")
-	axImag.plot(ts.time, ts.imag)
-	axImag.set_ylabel("Imaginary")
-	axImag.set_xlabel("Time [sec]")
-	plt.tight_layout()
-	plt.show()
+    axTime.plot(spec.freq, spec.magnitude)
+    axTime.set_ylabel("Magnitude")
+    axTime.set_xlabel("Frequency [Hz]")
+    axMagn.plot(ts.time, ts.magnitude)
+    axMagn.set_ylabel("Magnitude")
+    axMagn.set_xlabel("Time [sec]")
+    axPhas.plot(ts.time, ts.phase)
+    axPhas.set_ylabel("Phase")
+    axPhas.set_xlabel("Time [sec]")
+    axReal.plot(ts.time, ts.real)
+    axReal.set_ylabel("Real")
+    axReal.set_xlabel("Time [sec]")
+    axImag.plot(ts.time, ts.imag)
+    axImag.set_ylabel("Imaginary")
+    axImag.set_xlabel("Time [sec]")
+    plt.tight_layout()
+    plt.show()
 
 
 
@@ -105,6 +104,3 @@ createTimeSeriesPlot(tsReverse, spec)
 # with same size and data type.
 del fft
 del ifft
-
-
-
