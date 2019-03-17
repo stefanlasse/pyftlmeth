@@ -26,10 +26,6 @@ class FourierMethodBase():
         self.pyftlmeth_homedir = ".pyftlmeth"
 
     ## --------------------------------------------------------------------------
-    # def __del__(self):
-        # pass
-
-    ## --------------------------------------------------------------------------
     def floorLog2(self, n):
         """Finds the largest power of 2 which is smaller than the array size."""
         last = n
@@ -135,13 +131,6 @@ class FourierTransform(FourierMethodBase):
         self.saveWisdom()
 
     ## --------------------------------------------------------------------------
-    # def __del__(self):
-
-        # del self.FFT
-        # del self.inputArray
-        # del self.outputArray
-
-    ## --------------------------------------------------------------------------
     def __call__(self, inputTS):
         """Computes the fourier transform of the input TimeSeries object."""
         data = inputTS.data
@@ -221,13 +210,6 @@ class InverseFourierTransform(FourierMethodBase):
         self.saveWisdom()
 
     ## --------------------------------------------------------------------------
-    # def __del__(self):
-
-        # del self.IFFT
-        # del self.inputArray
-        # del self.outputArray
-
-    ## --------------------------------------------------------------------------
     def __call__(self, inputSpectrum):
         """Computes the inverse fourier transform of the input time series data(t)."""
         data = inputSpectrum.data
@@ -273,11 +255,6 @@ class Convolution():
                                             dtype=self.FFT.outputDataType)
 
         self.fftResponse = Spectrum(np.zeros(self.resultSize, dtype=self.FFT.outputDataType))
-
-    ## --------------------------------------------------------------------------
-    # def __del__(self):
-        # del self.FFT
-        # del self.IFFT
 
     ## --------------------------------------------------------------------------
     def __call__(self, signal):
@@ -376,10 +353,6 @@ class AutoCorrelation():
         self.correlation = CrossCorrelation(size=size, dtype=dtype, realOut=realOut)
 
     ## --------------------------------------------------------------------------
-    # def __del__(self):
-        # del self.correlation
-
-    ## --------------------------------------------------------------------------
     def __call__(self, data):
         """Computes the auto-correlation r(tau) of the input time series x(t).
 
@@ -427,11 +400,6 @@ class CrossCorrelation():
                                             dtype=self.FFT.outputDataType,
                                             realOut=realOut)
         self.outputArraySize = self.IFFT.outputArraySize
-
-    ## --------------------------------------------------------------------------
-    # def __del__(self):
-        # del self.FFT
-        # del self.IFFT
 
     ## --------------------------------------------------------------------------
     def __call__(self, tsA, tsB):
